@@ -7,10 +7,30 @@ spring:
 
 eureka:
   client:
+    healthcheck:
+      enabled: true
     service-url:
-      default-zone: http://user:password123@peer1:8761/eureka/,http://user:password123@peer2:8762/eureka/
+#      default-zone: http://user:password123@peer1:8761/eureka/,http://user:password123@peer2:8762/eureka/
+      default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
   instance:
     prefer-ip-address: true
+    metadata-map:
+      # 自定义的元数据，key/value 都可以随便写
+      my-metadata: service-movie
 
 user:
-  userServiceUrl: http://localhost:8000/
+  userServiceUrl: http://microservice-provider-user:8000/
+
+## INFO
+info:
+  app:
+    name: @project.artifactId@
+    encoding: @project.build.sourceEncoding@
+    java:
+      source: @java.version@
+      target: @java.version@
+
+# 属性配置Ribbon的负载均衡
+microservice-provider-user:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
