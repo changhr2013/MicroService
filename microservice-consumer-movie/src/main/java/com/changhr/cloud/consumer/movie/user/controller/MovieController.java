@@ -1,6 +1,8 @@
 package com.changhr.cloud.consumer.movie.user.controller;
 
 import com.changhr.cloud.consumer.movie.user.entity.User;
+import com.changhr.cloud.consumer.movie.user.feign.UserFeignClient;
+import com.netflix.discovery.converters.Auto;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +26,8 @@ public class MovieController {
 
     private static Logger logger = LoggerFactory.getLogger(MovieController.class);
 
-    @Value("${user.userServiceUrl}")
-    private String userServiceUrl;
-
     @Autowired
-    private RestTemplate restTemplate;
+    private UserFeignClient userFeignClient;
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -38,7 +37,7 @@ public class MovieController {
 
     @GetMapping("/user/{id}")
     public User findById(@PathVariable Long id){
-        return this.restTemplate.getForObject(this.userServiceUrl + id, User.class);
+        return this.userFeignClient.findById(id);
     }
 
     @GetMapping("/log-user-instance")
