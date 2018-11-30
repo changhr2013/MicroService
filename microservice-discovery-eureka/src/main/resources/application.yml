@@ -2,21 +2,29 @@ spring:
   application:
     name: microservice-discovery-eureka
 
-security:
-  basic:
-    # 开启基于 HTTP basic 的认证
+#security:
+#  basic:
+#    # 开启基于 HTTP basic 的认证
+#    enabled: false
+#  user:
+#    # 配置登录的账号是 user
+#    name: user
+#    # 配置登录的密码是 password123
+#    password: password123
+#
+management:
+  security:
     enabled: false
-  user:
-    # 配置登录的账号是 user
-    name: user
-    # 配置登录的密码是 password123
-    password: password123
+
+endpoints:
+  health:
+    sensitive: false
 
 eureka:
   client:
     # 禁用 Eureka 客户端自己注册自己
-#    register-with-eureka: false
-#    fetch-registry: false
+    register-with-eureka: false
+    fetch-registry: false
 ---
 
 spring:

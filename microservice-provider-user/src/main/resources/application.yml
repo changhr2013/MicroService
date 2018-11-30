@@ -16,6 +16,12 @@ spring:
     # 指定 h2 数据库的数据脚本
     data: classpath:data.sql
 
+# 健康检查
+management:
+  endpoint:
+    health:
+      show-details: always
+
 eureka:
   client:
     healthcheck:

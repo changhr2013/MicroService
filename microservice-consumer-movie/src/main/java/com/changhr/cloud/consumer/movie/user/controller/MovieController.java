@@ -3,6 +3,9 @@ package com.changhr.cloud.consumer.movie.user.controller;
 import com.changhr.cloud.consumer.movie.user.entity.User;
 import com.changhr.cloud.consumer.movie.user.feign.UserFeignClient;
 import com.netflix.discovery.converters.Auto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import feign.Param;
+import feign.RequestLine;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -35,9 +37,22 @@ public class MovieController {
     @Autowired
     private LoadBalancerClient loadBalancerClient;
 
+//    @HystrixCommand(fallbackMethod = "findByIdFallback")
     @GetMapping("/user/{id}")
-    public User findById(@PathVariable Long id){
+    public User findById(@PathVariable("id") Long id) {
         return this.userFeignClient.findById(id);
+    }
+
+    /**
+     * findById(Long id) 的断路方法
+     * @param id    用户 Id
+     * @return
+     */
+    public User findByIdFallback(Long id) {
+        User user = new User();
+        user.setId(-1L);
+        user.setName("默认用户");
+        return user;
     }
 
     @GetMapping("/log-user-instance")
@@ -46,7 +61,6 @@ public class MovieController {
         // 打印当前选择的是哪个节点
         logger.info("{}:{}:{}", serviceInstance.getServiceId(),
                 serviceInstance.getHost(), serviceInstance.getPort());
-
     }
 
     /**

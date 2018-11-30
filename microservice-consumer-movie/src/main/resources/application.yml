@@ -5,6 +5,18 @@ spring:
   application:
     name: microservice-consumer-movie
 
+# 健康检查
+management:
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+endpoints:
+  health:
+    sensitive: false
+
+# 注册中心
 eureka:
   client:
     healthcheck:
@@ -31,3 +43,23 @@ info:
 microservice-provider-user:
   ribbon:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+feign:
+  hystrix:
+    # 说明：请务必注意，从Spring Cloud Dalston开始，Feign默认是不开启Hystrix的。
+    # 因此，如使用Dalston请务必额外设置属性：feign.hystrix.enabled=true，否则断路器不会生效。
+    # 而，Spring Cloud Angel/Brixton/Camden中，Feign默认都是开启Hystrix的。无需设置该属性。
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      # 支持的媒体类型列表
+      mime-types: text/xml,application/xml,application/json
+      # 请求的最小阈值
+      min-request-size: 2048
+    response:
+      enabled: true
+logging:
+  level:
+    # 将 Feign 接口的日志级别设置成 DEBUG，因为 Feign 的 Logger.Level 只对 DEBUG 作出响应
+    com.changhr.cloud.consumer.movie.user.feign.UserFeignClient: DEBUG
