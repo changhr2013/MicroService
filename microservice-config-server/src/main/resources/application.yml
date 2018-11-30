@@ -1,0 +1,31 @@
+server:
+  # 服务端口
+  port: 8080
+spring:
+  application:
+    # 服务名称
+    name: microservice-config-server
+  cloud:
+    config:
+      server:
+        git:
+          # 配置 Git 仓库的地址
+          uri: https://gitee.com/changhr2013/cloudgo
+          username: changhr2013
+          password:
+
+# 健康检查
+management:
+  endpoint:
+    health:
+      show-details: always
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+    healthcheck:
+      enabled: true
+  instance:
+    # 表示将自己的 IP 注册到 Eureka Server
+    prefer-ip-address: true
