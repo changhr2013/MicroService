@@ -1,0 +1,61 @@
+server:
+  port: 8040
+spring:
+  application:
+    name: microservice-gateway-zuul
+eureka:
+  client:
+    service-url:
+      default-zone: http://peer1:8761/eureka/
+# 健康检查
+management:
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+endpoints:
+  health:
+    sensitive: false
+
+# 为 ribbon 禁用 Eureka
+ribbon:
+  eureka:
+    enabled: false
+
+microservice-provider-user:
+  ribbon:
+    listOfServers: peer1:8000, peer1:8001
+
+microservice-consumer-movie:
+  ribbon:
+    listOfServers: peer1:8010
+
+microservice-file-upload:
+  ribbon:
+    listOfServers: peer1:8050
+# Zuul 配置
+zuul:
+  # 1. 自定义指定微服务的访问路径
+  routes:
+    microservice-file-upload:
+      path: /file/**
+      service-id: microservice-file-upload
+    microservice-provider-user: /user/**
+    microservice-consumer-movie:
+      path: /movie/**
+      service-id: microservice-consumer-movie
+  # 2. 忽略指定微服务
+#  ignored-services: microservice-provider-user,microservice-consumer-movie
+  # 3. 忽略所有微服务，只路由指定微服务
+  # 使用 '*' 可忽略所有微服务
+#  ignored-services: '*'
+#  routes:
+#    microservice-provider-user: /user/**
+  # 同时指定微服务的 serviceId 和对应路径
+#  routes:
+    # 该配置方式中，user-route 只是给路由一个名称，可以任意起名。
+#    user-route:
+#      service-id: provider-microservice-user
+      # service-id 对应的路径
+#      path: /user/**

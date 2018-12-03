@@ -1,0 +1,18 @@
+server:
+  port: 8050
+eureka:
+  client:
+    service-url:
+      default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: microservice-file-upload
+  http:
+    multipart:
+      # 默认 1M
+      max-file-size: 2000MB
+      # 默认 10M
+      max-request-size: 2500MB
+      enabled: true
