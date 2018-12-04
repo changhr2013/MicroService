@@ -12,7 +12,7 @@ import org.springframework.cloud.netflix.turbine.stream.EnableTurbineStream;
 @SpringBootApplication
 //@EnableTurbine
 @EnableTurbineStream
-@EnableCircuitBreaker
+//@EnableCircuitBreaker
 @EnableDiscoveryClient
 public class HystrixTurbineApplication {
 

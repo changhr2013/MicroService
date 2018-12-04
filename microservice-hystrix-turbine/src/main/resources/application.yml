@@ -1,5 +1,8 @@
 server:
+  # 容器端口
   port: 8031
+management:
+  port: 8032
 spring:
   application:
     name: microservice-hystrix-turbine
@@ -11,9 +14,11 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://peer1:8761/eureka/
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
   instance:
     prefer-ip-address: true
+    # 务必跟 server.port 的配置保持一致
+    non-secure-port: 8031
 #turbine:
 #  app-config: microservice-consumer-movie
 #  cluster-name-expression: "'default'"

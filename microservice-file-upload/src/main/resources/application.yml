@@ -12,7 +12,7 @@ spring:
   http:
     multipart:
       # 默认 1M
-      max-file-size: 2000MB
+      max-file-size: 2000Mb
       # 默认 10M
-      max-request-size: 2500MB
+      max-request-size: 2500Mb
       enabled: true

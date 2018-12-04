@@ -22,6 +22,8 @@ endpoints:
 ribbon:
   eureka:
     enabled: false
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
 
 microservice-provider-user:
   ribbon:
@@ -31,9 +33,19 @@ microservice-consumer-movie:
   ribbon:
     listOfServers: peer1:8010
 
-microservice-file-upload:
-  ribbon:
-    listOfServers: peer1:8050
+#microservice-file-upload:
+#  ribbon:
+#    listOfServers: peer1:8050
+
+# 上传大文件得将超时时间设置长一些，否则会报超时异常。
+# 以下几行超时设置来自 http://cloud.spring.io/spring-cloud-static/Camden.SR4/#_uploading_files_through_zuul
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
 # Zuul 配置
 zuul:
   # 1. 自定义指定微服务的访问路径
