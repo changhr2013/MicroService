@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User findById(@PathVariable Long id) {
-        if (id == null){
+        if (id == -1){
             throw new ParameterException();
         }
         User findOne = this.userRepository.findOne(id);

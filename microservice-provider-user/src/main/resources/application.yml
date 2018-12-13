@@ -15,6 +15,11 @@ spring:
     schema: classpath:schema.sql
     # 指定 h2 数据库的数据脚本
     data: classpath:data.sql
+  rabbitmq:
+    host: peer1
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
 
 # 健康检查
 management:

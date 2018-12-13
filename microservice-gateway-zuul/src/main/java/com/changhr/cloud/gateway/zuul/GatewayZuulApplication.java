@@ -1,8 +1,12 @@
 package com.changhr.cloud.gateway.zuul;
 
+import com.changhr.cloud.gateway.zuul.filters.PreRequestLogFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * 在启动类上添加注解 @EnableZuulProxy, 声明一个 Zuul 代理。
@@ -18,5 +22,16 @@ public class GatewayZuulApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayZuulApplication.class, args);
+    }
+
+    @Bean
+    public PreRequestLogFilter preRequestLogFilter() {
+        return new PreRequestLogFilter();
+    }
+
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
     }
 }

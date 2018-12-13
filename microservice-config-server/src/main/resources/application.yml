@@ -10,16 +10,31 @@ spring:
       server:
         git:
           # 配置 Git 仓库的地址
-          uri: https://gitee.com/changhr2013/cloudgo
+          uri: https://gitee.com/changhr2013/micro-service-config.git
           username: changhr2013
           password:
+          # config server 启动时 clone 仓库
+          clone-on-start: true
+          default-label: master
+        health:
+          repositories:
+            a-foo:
+              label: config-label-v2.0
+              name: microservice-foo
+              profiles: dev
 
 # 健康检查
 management:
   endpoint:
     health:
       show-details: always
+  security:
+    enabled: false
+endpoints:
+  health:
+    sensitive: false
 
+# 注册中心
 eureka:
   client:
     service-url:
@@ -29,3 +44,11 @@ eureka:
   instance:
     # 表示将自己的 IP 注册到 Eureka Server
     prefer-ip-address: true
+
+# 将以下包的日志设置为DEBUG，就可打印 config server 请求 Git 仓库的细节
+logging:
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.boot: DEBUG
+encrypt:
+  key: foo

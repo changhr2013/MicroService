@@ -17,24 +17,25 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * 全局异常捕获
+ * 应用全局异常捕获
  *
  * @author changhr
- * @create 2018-12-10 16:03
+ * @create 2018-12-11 17:39
  */
 @Slf4j
 @ControllerAdvice
-public class ExceptionHandlerBean extends ResponseEntityExceptionHandler {
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class AppExceptionHandlerBean extends ResponseEntityExceptionHandler {
 
     /**
-     * 全局未知异常捕获
-     * @param exception 运行时异常
-     * @param request   WebRequest 请求
-     * @return  ResponseEntity<Object>
+     * 参数
+     * @param ex        运行时异常
+     * @param request   请求
+     * @return ResponseEntity<Object>
      */
-    @ExceptionHandler({Exception.class})
-    public ResponseEntity<Object> handleException(RuntimeException exception, WebRequest request) {
-        return getResponseEntity(exception, request, UserResultEnum.UNKNOWN_ERROR);
+    @ExceptionHandler({ParameterException.class})
+    public ResponseEntity<Object> handleParamException(RuntimeException ex, WebRequest request) {
+        return getResponseEntity(ex, request, UserResultEnum.PARAM_ERROR);
     }
 
     /**
@@ -45,9 +46,9 @@ public class ExceptionHandlerBean extends ResponseEntityExceptionHandler {
      * @return ResponseEntity<Object>
      */
     @SuppressWarnings("Duplicates")
-    public ResponseEntity<Object> getResponseEntity(RuntimeException ex,
-                                                    WebRequest request,
-                                                    UserResultEnum resultEnum){
+    private ResponseEntity<Object> getResponseEntity(RuntimeException ex,
+                                                     WebRequest request,
+                                                     UserResultEnum resultEnum){
 
         ResultData errorResult = ResultDataUtil.error(resultEnum);
         String resultJson = JSON.toJSONString(errorResult);
@@ -55,4 +56,5 @@ public class ExceptionHandlerBean extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, resultJson, new HttpHeaders(), HttpStatus.OK, request);
     }
+
 }
