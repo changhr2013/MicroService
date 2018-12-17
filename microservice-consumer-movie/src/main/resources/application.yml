@@ -4,6 +4,14 @@ server:
 spring:
   application:
     name: microservice-consumer-movie
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      percentage: 1.0
+    web:
+      client:
+        enabled: true
   rabbitmq:
     host: peer1
     port: 5672
@@ -28,11 +36,17 @@ eureka:
       enabled: true
     service-url:
       default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+    # 定时刷新本地缓存时间，5秒
+    registry-fetch-interval-seconds: 5
   instance:
     prefer-ip-address: true
     metadata-map:
       # 自定义的元数据，key/value 都可以随便写
       my-metadata: service-movie
+    # 心跳间隔，5秒
+    lease-renewal-interval-in-seconds: 5
+    # 没有心跳淘汰时间，10秒
+    lease-expiration-duration-in-seconds: 10
 
 ## INFO
 info:
@@ -67,3 +81,4 @@ logging:
   level:
     # 将 Feign 接口的日志级别设置成 DEBUG，因为 Feign 的 Logger.Level 只对 DEBUG 作出响应
     com.changhr.cloud.consumer.movie.user.feign.UserFeignClient: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: DEBUG

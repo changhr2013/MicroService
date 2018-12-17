@@ -1,37 +1,36 @@
 spring:
+  application:
+    # 指定注册到 Eureka Server 上的应用名称
+    name: microservice-provider-user
   jpa:
     generate-ddl: false
     show-sql: true
     hibernate:
       ddl-auto: none
-  # 指定数据源
-  datasource:
-    # 指定数据源类型
-    platform: h2
-    # 指定 h2 数据库的建表脚本
-    schema: classpath:schema.sql
-    # 指定 h2 数据库的数据脚本
-    data: classpath:data.sql
+  datasource:                           # 指定数据源
+    platform: h2                        # 指定数据源类型
+    schema: classpath:schema.sql        # 指定h2数据库的建表脚本
+    data: classpath:data.sql            # 指定h2数据库的数据脚本
+  sleuth:
+    sampler:
+      percentage: 1.0
   # rabbitmq配置
   rabbitmq:
     host: peer1
     port: 5672
     username: rabbitmq
     password: rabbitmq
+  zipkin:
+    rabbitmq:
+      queue: zipkin
 
-# 健康检查
-management:
-  endpoint:
-    health:
-      show-details: always
-
-# 注册中心客户端配置
+## 注册中心客户端配置
 eureka:
   client:
     healthcheck:
       enabled: true
     service-url:
-        default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+      default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
     # 定时刷新本地缓存时间，5秒
     registry-fetch-interval-seconds: 5
   instance:
@@ -42,23 +41,7 @@ eureka:
     # 没有心跳的淘汰时间，10秒
     lease-expiration-duration-in-seconds: 10
 
-logging:
-  level:
-    root: INFO
-    org.hibernate: INFO
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
-    org.springframework.web.servlet.DispatcherServlet: DEBUG
-
-## 自定义INFO
-info:
-  app:
-    name: @project.artifactId@
-    encoding: @project.build.sourceEncoding@
-    java:
-      source: @java.version@
-      target: @java.version@
-
+## 服务器 undertow 配置
 server:
   undertow:
     max-http-post-size: 0
@@ -75,12 +58,12 @@ server:
     direct-buffers: true
 ---
 spring:
-     profiles: balance1
+  profiles: balance1
 server:
   port: 8000
 
 ---
 spring:
-     profiles: balance2
+  profiles: balance2
 server:
   port: 8001

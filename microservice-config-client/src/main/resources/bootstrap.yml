@@ -1,12 +1,49 @@
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
   application:
     # 对应 config server 所获取的配置文件的 {application}
     name: microservice-foo
   cloud:
     config:
       # 对应 spring cloud config server 的地址
-      uri: http://localhost:8080/
+      # uri: http://peer1:8080/
       # profile 对应 config server 所获取的配置文件中的 {profile}
       profile: dev
       # 指定 Git 仓库的分支，对应 config server 所获取的配置文件的 {label}
       label: master
+      discovery:
+        # 表示使用服务发现组件中的 config server，而不是自己指定的 config server 的 uri，默认为false
+        enabled: true
+        # 指定 config server 在服务发现中的 serviceId，默认是 configserver
+        service-id: microservice-config-server
+      username: user
+      password: password123
+
+# 关闭端点安全验证
+management:
+  security:
+    enabled: false
+
+# 注册中心
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+  client:
+    service-url:
+      default-zone: http://pee1:8761/eureka,http://peer2:8762/eureka/
+    registry-fetch-interval-seconds: 5
+---
+spring:
+     profiles: service1
+server:
+  port: 8081
+---
+spring:
+     profiles: service2
+server:
+  port: 8082
