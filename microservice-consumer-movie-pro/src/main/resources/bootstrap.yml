@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: microservice-consumer-movie
+  ## spring cloud config 配置
+  cloud:
+    config:
+      name: microservice-consumer-movie-pro
+      # 对应 spring cloud config server 的地址
+      # uri: http://peer1:8080/
+      # profile 对应 config server 所获取的配置文件中的 {profile}
+      profile: dev
+      # 指定 Git 仓库的分支，对应 config server 所获取的配置文件的 {label}
+      label: master
+      discovery:
+        # 表示使用服务发现组件中的 config server，而不是自己指定的 config server 的 uri，默认为false
+        enabled: true
+        # 指定 config server 在服务发现中的 serviceId，默认是 configserver
+        service-id: microservice-config-server
+      username: user
+      password: password123
