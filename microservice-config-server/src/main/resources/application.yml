@@ -50,5 +50,14 @@ logging:
   level:
     org.springframework.cloud: DEBUG
     org.springframework.boot: DEBUG
+
 encrypt:
   key: foo
+
+# 开启基于 HTTP basic 的认证
+security:
+  basic:
+    enabled: true
+  user:
+    name: user
+    password: password123

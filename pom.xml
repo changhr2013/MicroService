@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,11 +13,27 @@
     <description>spring cloud project for Spring Boot</description>
 
     <modules>
+        <!-- 基础微服务 -->
         <module>microservice-discovery-eureka</module>
+        <module>microservice-hystrix-dashboard</module>
+        <module>microservice-hystrix-turbine</module>
+        <module>microservice-gateway-zuul</module>
+        <module>microservice-zipkin-server</module>
+        <module>microservice-config-server</module>
+
+        <!-- config client 最佳实践 -->
+        <module>microservice-config-client</module>
+
+        <!-- 基础生产者消费者 -->
         <module>microservice-provider-user</module>
         <module>microservice-consumer-movie</module>
-        <module>microservice-hystrix-dashboard</module>
-        <module>microservice-config-server</module>
+
+        <!-- 文件上传模块 -->
+        <module>microservice-file-upload</module>
+
+        <!-- 生产者消费者最佳实践 -->
+        <module>microservice-provider-user-pro</module>
+        <module>microservice-consumer-movie-pro</module>
     </modules>
 
     <parent>
@@ -34,7 +51,6 @@
     </properties>
 
     <dependencies>
-
         <!-- Eureka 客户端 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -55,6 +71,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

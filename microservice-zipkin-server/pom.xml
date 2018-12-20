@@ -3,36 +3,50 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.changhr.cloud</groupId>
         <artifactId>microservice-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <artifactId>microservice-zipkin-server</artifactId>
 
-    <artifactId>microservice-discovery-eureka</artifactId>
-    <packaging>jar</packaging>
+    <name>microservice-zipkin-server</name>
+    <description>Microservice Zipkin Server project for Spring Boot</description>
 
-    <name>discovery-eureka</name>
-    <description>microservice discovery eureka project for Spring Boot</description>
+    <properties>
+        <zipkin.version>2.7.1</zipkin.version>
+    </properties>
 
     <dependencies>
-        <!-- Eureka Server -->
+        <!-- Zipkin Server 支持 -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-autoconfigure-ui</artifactId>
         </dependency>
 
-        <!-- 为 Eureka Server 添加用户认证 -->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-server</artifactId>
+        </dependency>
+
+        <!-- Zipkin 使用rabbitmq进行数据收集 -->
+        <dependency>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-autoconfigure-collector-rabbitmq</artifactId>
+            <version>${zipkin.version}</version>
+        </dependency>
+
+        <!-- Zipkin 支持 Elasticsearch -->
+        <dependency>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-autoconfigure-storage-elasticsearch-http</artifactId>
+            <version>${zipkin.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>discovery-eureka</finalName>
+        <finalName>zipkin-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -75,7 +89,6 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
