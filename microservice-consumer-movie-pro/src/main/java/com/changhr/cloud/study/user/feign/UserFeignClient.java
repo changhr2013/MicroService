@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * microservice-provider-user 的 Feign 接口
- *
+ * <p>
  * 2. 使用 @FeignClient 的 configuration 属性，指定 feign 的配置类
  *
  * @author changhr
  */
 @FeignClient(name = "microservice-provider-user"
-            , configuration = FeignLogConfiguration.class
-            , fallbackFactory = FeignClientFallbackFactory.class
+        , configuration = FeignLogConfiguration.class
+        , fallbackFactory = FeignClientFallbackFactory.class
 )
 public interface UserFeignClient {
 

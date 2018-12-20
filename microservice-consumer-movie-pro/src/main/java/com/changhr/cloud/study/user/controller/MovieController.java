@@ -46,6 +46,7 @@ public class MovieController {
 
     /**
      * 查询 microservice-provider-user 服务的信息并返回
+     *
      * @return microservice-provider-user 服务的信息
      */
     @GetMapping("/user-instance")

@@ -11,15 +11,15 @@ import com.changhr.cloud.study.repository.UserRepository;
 @RestController
 public class UserController {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  @Autowired
-  public UserController(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+    @Autowired
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-  @GetMapping("/{id}")
-  public User findById(@PathVariable Long id) {
-    return this.userRepository.findOne(id);
-  }
+    @GetMapping("/{id}")
+    public User findById(@PathVariable Long id) {
+        return this.userRepository.findOne(id);
+    }
 }

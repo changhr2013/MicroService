@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * UserFeignClient 的 fallbackFactory 类，该类需实现 FallbackFactory 接口，并覆写 create 方法
+ *
  * @author changhr
  */
 @Component
