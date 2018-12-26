@@ -46,6 +46,12 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- 使用 okhttp 替换feign的默认client -->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
+        </dependency>
+
         <!-- Hystrix 断路器 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

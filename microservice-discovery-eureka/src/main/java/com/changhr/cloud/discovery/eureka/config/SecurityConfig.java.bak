@@ -1,0 +1,21 @@
+package com.changhr.cloud.discovery.eureka.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+/**
+ * 禁用csrf校验
+ *
+ * @author changhr
+ * @create 2018-12-26 11:41
+ */
+@Configuration
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.csrf().disable();
+    }
+}

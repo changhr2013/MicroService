@@ -1,5 +1,30 @@
+## 服务器配置
 server:
   port: 8030
+
+## spring 配置
 spring:
   application:
     name: microservice-hystrix-dashboard
+
+## 注册中心-客户端配置
+eureka:
+  instance:
+    # 表示将自己的 IP 注册到 Eureka Server
+    prefer-ip-address: true
+    # 心跳间隔，5秒
+    lease-renewal-interval-in-seconds: 5
+    # 没有心跳的淘汰时间，15秒
+    lease-expiration-duration-in-seconds: 15
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+    # 定时刷新本地缓存时间，5秒
+    registry-fetch-interval-seconds: 5
+
+## 日志配置
+logging:
+  path: /home/microservice/log/
+  file: microservice-hystrix-dashboard.log

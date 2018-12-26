@@ -1,4 +1,9 @@
+spring:
+  application:
+    # 服务名称
+    name: microservice-config-server
 encrypt:
+  key: foo
   keyStore:
     location: classpath:/server.jks
     password: letmein

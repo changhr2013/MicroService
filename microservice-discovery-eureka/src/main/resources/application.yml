@@ -13,7 +13,6 @@ spring:
 #    name: user
 #    # 配置登录的密码是 password123
 #    password: password123
-#
 
 management:
   security:
@@ -23,55 +22,86 @@ endpoints:
   health:
     sensitive: false
 
+## Eureka 服务器配置
 eureka:
   server:
     # 中小规模下，自我保护模式坑比好处多，所以关闭它
     enable-self-preservation: false
+
     # 心跳阈值计算周期，如果开启自我保护模式，可以改一下这个配置
-    renewal-threshold-update-interval-ms: 120000
-    # 主动失效检测间隔，配置成5秒
-    eviction-interval-timer-in-ms: 5000
+#    renewal-threshold-update-interval-ms: 120000
+
+    # 启用主动失效，并且每次主动失效检测间隔为 3s
+    # 主动失效检测间隔，配置成3秒
+    # 默认 60s
+    eviction-interval-timer-in-ms: 3000
+
     # 禁用 readOnlyCacheMap
     use-read-only-response-cache: false
+
+    # eureka server 刷新 readCacheMap 的时间，
+    # 注意，client 读取的是 readCacheMap，这个时间决定了多久会把 readWriteCacheMap 的缓存更新到 readCacheMap 上
+    response-cache-update-interval-ms: 3000
+
+    # eureka server 缓存 readWriteCacheMap 失效时间，这个只有在这个时间过去后缓存才会失效，
+    # 失效前不会更新，过期后从 registry 从新服务注册服务信息，registry 是一个 ConcurrentHashMap
+    # 由于启用了 evict 其实就用不太上改这个配置了
+    # 默认 180s
+    response-cache-auto-expiration-in-seconds: 180
   instance:
+    # 服务刷新时间配置，每隔这个时间会主动心跳一次
     # 心跳间隔，5秒
-    lease-renewal-interval-in-seconds: 15
-    # 没有心跳的淘汰时间，10秒
-    lease-expiration-duration-in-seconds: 10
+    # 默认 30s
+    lease-renewal-interval-in-seconds: 5
+
+    # 服务过期时间配置，超过这个时间没有接收到心跳 EurekaServer 就会将这个实例剔除
+    # 没有心跳的淘汰时间，15秒
+    # 默认 90s
+    lease-expiration-duration-in-seconds: 15
+
+    prefer-ip-address: true
   client:
+    healthcheck:
+      enabled: true
+    # eureka client 刷新本地缓存时间
+    # 默认 30s
     registry-fetch-interval-seconds: 5
-  # 禁用 Eureka 客户端自己注册自己
+
+    # 禁用 Eureka 客户端自己注册自己
 #    register-with-eureka: false
 #    fetch-registry: false
----
 
+# eureka 客户端 ribbon 刷新时间
+# 默认 30s
+ribbon:
+  ServerListRefreshInterval: 1000
+
+## 日志配置
+logging:
+  path: /home/microservice/log/
+  file: microservice-discovery-eureka.log
+---
 spring:
   # 指定 profile = peer1
   profiles: peer1
-
 server:
   port: 8761
-
 eureka:
   instance:
     # 指定当 profile = peer1 时，主机名是 peer1
     hostname: peer1
   client:
-    service-url:
+    serviceUrl:
       # 将自己注册到 peer2 这个 Eureka 上面去
-      default-zone: http://peer2:8762/eureka/
-
+      defaultZone: http://peer2:8762/eureka/
 ---
-
 spring:
   profiles: peer2
-
 server:
   port: 8762
-
 eureka:
   instance:
     hostname: peer2
   client:
-    service-url:
-      default-zone: http://peer1:8761/eureka/
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/

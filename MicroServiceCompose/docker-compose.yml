@@ -1,0 +1,85 @@
+# 表示该docker-compose.yml文件使用的是Version 2 file format
+version: '3'
+
+# Version 2 file format 的固定写法，为project定义服务
+services:
+  rabbitmq-server:
+    container_name: rabbimqServer
+    hostname: rabbitmq-server
+    image: rabbitmq:3-management
+    ports: 
+      - "15672:15672"
+      - "5672:5672"
+    environment: 
+      - RABBITMQ_DEFAULT_USER=firmail
+      - RABBITMQ_DEFAULT_PASS=firmail20180102
+  # 指定服务名称
+  peer1:
+    # 指定容器的名称
+    container_name: discoveryEureka1
+    # 指定服务所使用的镜像
+    image: microservice/microservice-discovery-eureka:1.0.0-SNAPSHOT
+    # 暴露端口信息
+    ports:
+      - "8761:8761"
+    # 指定服务运行的环境参数
+    environment:
+      - spring.profiles.active=peer1
+  peer2:
+    container_name: discoveryEureka2
+    image: microservice/microservice-discovery-eureka:1.0.0-SNAPSHOT
+    hostname: peer2
+    ports:
+      - "8762:8762"
+    environment:
+      - spring.profiles.active=peer2
+  config-server:
+    container_name: configServer
+    image: microservice/microservice-config-server:1.0.0-SNAPSHOT
+    ports:
+      - "8080:8080"
+  provider-user-pro1:
+    container_name: providerUserPro1
+    image: microservice/microservice-provider-user-pro:1.0.0-SNAPSHOT
+    ports:
+      - "8000:8000"
+    environment: 
+      - spring.profiles.active=balance1
+  provider-user-pro2:
+    container_name: providerUserPro2
+    image: microservice/microservice-provider-user-pro:1.0.0-SNAPSHOT
+    ports:
+      - "8001:8001"
+    environment: 
+      - spring.profiles.active=balance2
+  consumer-movie-pro:
+    container_name: consumerMoviePro
+    image: microservice/microservice-consumer-movie-pro:1.0.0-SNAPSHOT
+    ports:
+      - "8010:8010"
+  file-upload:
+    container_name: fileUpload
+    image: microservice/microservice-file-upload:1.0.0-SNAPSHOT
+    ports:
+      - "8050:8050"
+  gateway-zuul:
+    container_name: gatewayZuul
+    image: microservice/microservice-gateway-zuul:1.0.0-SNAPSHOT
+    ports:
+      - "8040:8040"
+  hystrix-dashboard:
+    container_name: hystrixDashboard
+    image: microservice/microservice-hystrix-dashboard:1.0.0-SNAPSHOT
+    ports:
+      - "8030:8030"
+  hystrix-turbine:
+    container_name: hystrixTurbine
+    image: microservice/microservice-hystrix-turbine:1.0.0-SNAPSHOT
+    ports:
+      - "8031:8031"
+      - "8032:8032"
+  zipkin-server:
+    container_name: zipkinServer
+    image: microservice/microservice-zipkin-server:1.0.0-SNAPSHOT
+    ports:
+     - "9411:9411"

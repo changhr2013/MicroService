@@ -1,9 +1,17 @@
+## 服务器配置
 server:
   port: 9411
+
+## spring 配置
+spring:
+  application:
+    name: zipkin-server
+
+## zipkin 配置
 zipkin:
   collector:
     rabbitmq:
-      addresses: localhost:5672
+      addresses: 192.168.40.192:5672
       password: rabbitmq
       username: rabbitmq
       queue: zipkin
@@ -11,19 +19,20 @@ zipkin:
     type: elasticsearch
     elasticsearch:
       cluster: elasticsearch
-      hosts: http://localhost:9200
+      hosts: http://192.168.40.192:9200
       index: zipkin
       index-shards: 5
       index-replicas: 1
-spring:
-  application:
-    name: zipkin-server
+
+## 注册中心-客户端配置
 eureka:
   client:
-    service-url:
-      default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
     registry-fetch-interval-seconds: 5
   instance:
     prefer-ip-address: true
     lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
+    lease-expiration-duration-in-seconds: 15

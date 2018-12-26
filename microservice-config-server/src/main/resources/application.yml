@@ -1,10 +1,10 @@
+## 服务器配置
 server:
   # 服务端口
   port: 8080
+
+## spring 配置
 spring:
-  application:
-    # 服务名称
-    name: microservice-config-server
   cloud:
     config:
       server:
@@ -23,7 +23,7 @@ spring:
               name: microservice-foo
               profiles: dev
 
-# 健康检查
+# 监控配置
 management:
   endpoint:
     health:
@@ -34,25 +34,20 @@ endpoints:
   health:
     sensitive: false
 
-# 注册中心
+# 注册中心-客户端配置
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+    prefer-ip-address: true
   client:
-    service-url:
-      default-zone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
     healthcheck:
       enabled: true
-  instance:
-    # 表示将自己的 IP 注册到 Eureka Server
-    prefer-ip-address: true
-
-# 将以下包的日志设置为DEBUG，就可打印 config server 请求 Git 仓库的细节
-logging:
-  level:
-    org.springframework.cloud: DEBUG
-    org.springframework.boot: DEBUG
-
-encrypt:
-  key: foo
+    serviceUrl:
+      defaultZone: http://peer1:8761/eureka,http://peer2:8762/eureka/
+    registry-fetch-interval-seconds: 5
+ribbon:
+  ServerListRefreshInterval: 1000
 
 # 开启基于 HTTP basic 的认证
 security:
@@ -61,3 +56,12 @@ security:
   user:
     name: user
     password: password123
+
+## 日志配置
+# 将以下包的日志设置为DEBUG，就可打印 config server 请求 Git 仓库的细节
+logging:
+  path: /home/microservice/log/
+  file: microservice-config-server.log
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.boot: DEBUG

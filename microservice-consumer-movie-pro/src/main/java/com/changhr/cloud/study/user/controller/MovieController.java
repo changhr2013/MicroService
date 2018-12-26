@@ -32,7 +32,7 @@ public class MovieController {
     private LoadBalancerClient loadBalancerClient;
 
     @GetMapping("/user/{id}")
-    public User findById(@PathVariable("id") Long id) {
+    public User findById(@PathVariable("id")  Long id) {
         return this.userFeignClient.findById(id);
     }
 
