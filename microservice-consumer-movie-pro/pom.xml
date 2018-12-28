@@ -14,7 +14,7 @@
     <artifactId>microservice-consumer-movie-pro</artifactId>
     <packaging>jar</packaging>
 
-    <name>microservice-consumer-movie</name>
+    <name>microservice-consumer-movie-pro</name>
     <description>microservice consumer movie project for Spring Boot</description>
 
     <dependencies>

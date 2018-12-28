@@ -2,6 +2,10 @@ package com.changhr.cloud.study.user.controller;
 
 import com.changhr.cloud.study.user.entity.User;
 import com.changhr.cloud.study.user.feign.UserFeignClient;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import java.util.List;
  * @author changhr
  */
 @RestController
+@Api("MovieController 相关的 API")
 public class MovieController {
 
     private static Logger logger = LoggerFactory.getLogger(MovieController.class);
@@ -31,8 +36,10 @@ public class MovieController {
     @Autowired
     private LoadBalancerClient loadBalancerClient;
 
+    @ApiOperation(value = "根据 Id 查询用户信息", notes = "查询数据库中某个用户的信息")
+    @ApiImplicitParam(name = "id", value = "用户 ID", paramType = "path", required = true, dataType = "Long")
     @GetMapping("/user/{id}")
-    public User findById(@PathVariable("id")  Long id) {
+    public User findById(@PathVariable("id") Long id) {
         return this.userFeignClient.findById(id);
     }
 

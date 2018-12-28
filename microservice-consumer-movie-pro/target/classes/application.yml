@@ -18,12 +18,6 @@ server:
 
 ## spring 配置
 spring:
-  # rabbitmq配置
-  rabbitmq:
-    host: 192.168.40.192
-    port: 5672
-    username: rabbitmq
-    password: rabbitmq
   # 配置链路追踪的采样率
   sleuth:
     sampler:
@@ -90,9 +84,8 @@ feign:
 
 ## 日志配置
 logging:
-  path: /home/microservice/log/
-  file: microservice-consumer-movie.log
   level:
     # 将 Feign 接口的日志级别设置成 DEBUG，因为 Feign 的 Logger.Level 只对 DEBUG 作出响应
     com.changhr.cloud.consumer.movie.user.feign.UserFeignClient: DEBUG
     org.springframework.web.servlet.DispatcherServlet: DEBUG
+  config: classpath:logback.xml

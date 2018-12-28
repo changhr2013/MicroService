@@ -14,7 +14,7 @@
     <artifactId>microservice-provider-user</artifactId>
     <packaging>jar</packaging>
 
-    <name>provider-user</name>
+    <name>microservice-provider-user</name>
     <description>microservice provider user project for Spring Boot</description>
 
     <dependencies>
